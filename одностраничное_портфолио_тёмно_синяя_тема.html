@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Портфолио — Имя Фамилия</title>
+  <meta name="description" content="Личная страница‑портфолио: обо мне, навыки, проекты и контакты." />
+  <style>
+    :root{
+      --bg: #0b1220;          /* основной фон — тёмно‑синий */
+      --panel: #0f1a2d;       /* панели/карточки */
+      --elev: #111f38;        /* приподнятые элементы */
+      --text: #e6ecff;        /* основной текст */
+      --muted: #a2b3d4;       /* вторичный текст */
+      --accent: #2d5cff;      /* акцент (royal blue) */
+      --accent-2: #7aa2ff;    /* светлый акцент */
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --gap: 20px;
+      --container: 1120px;
+    }
+
+    html{scroll-behavior:smooth;}
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% -10%, #15264a 0%, transparent 60%),
+                  radial-gradient(900px 600px at 100% 0%, #0f1b34 0%, transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+
+    a{color:var(--accent); text-decoration:none}
+    a:hover{color:var(--accent-2)}
+    img{max-width:100%; height:auto; display:block}
+
+    .container{width:min(100% - 40px, var(--container)); margin-inline:auto}
+
+    /* Навигация */
+    .nav{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(11,18,32,0.75); border-bottom:1px solid var(--border);
+    }
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+    .brand-badge{width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg, var(--accent), #6a8dff); display:grid; place-items:center; box-shadow:var(--shadow)}
+    .brand-badge svg{width:18px; height:18px; fill:white}
+    .nav a{opacity:.95}
+    .nav-links{display:flex; gap:18px; align-items:center}
+    .nav-links a{padding:8px 12px; border-radius:10px; color:var(--text); border:1px solid transparent}
+    .nav-links a:hover{background:var(--elev); border-color:var(--border)}
+
+    /* Хедер */
+    header{padding:72px 0 36px}
+    .hero{display:grid; gap:22px; align-items:center; grid-template-columns: 1.3fr .7fr}
+    .hero-card{
+      background:linear-gradient(180deg, rgba(45,92,255,.08), rgba(45,92,255,0) 25%), var(--panel);
+      border:1px solid var(--border); border-radius:var(--radius-xl); padding:28px; box-shadow:var(--shadow)
+    }
+    h1{font-size:clamp(28px, 4vw, 46px); line-height:1.15; letter-spacing:.1px; margin:0 0 8px}
+    .subtitle{color:var(--muted); font-size:clamp(16px, 1.6vw, 18px)}
+    .actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid var(--border);
+      background:var(--elev); color:var(--text); transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{background:linear-gradient(135deg, var(--accent), #6a8dff); border-color:transparent}
+    .btn .dot{width:8px; height:8px; border-radius:999px; background:white; opacity:.9}
+
+    .hero-aside{
+      background: linear-gradient(180deg, rgba(122,162,255,.10), rgba(122,162,255,0) 40%), var(--panel);
+      border:1px solid var(--border); border-radius:var(--radius-xl); padding:22px 22px 8px; box-shadow:var(--shadow)
+    }
+    .hero-aside ul{margin:0; padding:0; list-style:none}
+    .hero-aside li{display:flex; align-items:flex-start; gap:12px; padding:12px; border-radius:12px}
+    .hero-aside li + li{border-top:1px dashed var(--border)}
+    .hero-aside svg{flex:0 0 18px; margin-top:2px}
+
+    section{padding:28px 0 12px}
+    .section-title{font-size:clamp(20px,2vw,28px); margin:6px 0 14px}
+    .muted{color:var(--muted)}
+
+    /* О себе */
+    .about{display:grid; gap:18px; grid-template-columns: 1fr 1fr}
+    .about-card{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px}
+
+    /* Навыки */
+    .skills{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px}
+    .skill{grid-column: span 3; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px}
+    .skill h4{margin:0 0 8px; font-size:15px; letter-spacing:.3px; text-transform:uppercase}
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+    .tag{padding:6px 10px; border-radius:999px; background:rgba(122,162,255,.10); border:1px solid rgba(122,162,255,.25); font-size:13px}
+
+    /* Проекты */
+    .projects{display:grid; grid-template-columns: repeat(12, 1fr); gap:16px}
+    .card{grid-column: span 4; display:flex; flex-direction:column; overflow:hidden; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow)}
+    .thumb{aspect-ratio:16/9; background:linear-gradient(135deg, #1a2a4a, #0f1b34); display:grid; place-items:center; border-bottom:1px solid var(--border)}
+    .thumb svg{opacity:.9}
+    .card-body{padding:16px}
+    .card h3{margin:0 0 6px; font-size:18px}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--muted)}
+    .card a.btn{margin:12px 0 4px; align-self:flex-start}
+
+    /* Контакты */
+    .contact{display:grid; gap:16px; grid-template-columns: 1.2fr .8fr}
+    .contact .panel{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px}
+    .contact-form label{display:block; font-size:14px; margin:10px 0 6px; color:var(--muted)}
+    .contact-form input, .contact-form textarea{
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background:var(--elev); color:var(--text);
+    }
+    .contact-form textarea{min-height:120px; resize:vertical}
+    .contact-form .btn{margin-top:12px}
+
+    footer{padding:24px 0 46px; color:var(--muted); font-size:14px; border-top:1px solid var(--border); margin-top:28px}
+
+    /* Адаптив */
+    @media (max-width: 960px){
+      .hero{grid-template-columns:1fr}
+      .about{grid-template-columns:1fr}
+      .skills .skill{grid-column: span 4}
+      .projects .card{grid-column: span 6}
+      .contact{grid-template-columns:1fr}
+    }
+    @media (max-width: 640px){
+      .nav-links{display:none}
+      .skills .skill{grid-column: span 6}
+      .projects .card{grid-column: span 12}
+      header{padding-top:56px}
+    }
+
+    /* Доступность + аккуратные фокусы */
+    :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:10px}
+    ::selection{background:rgba(45,92,255,.35)}
+
+    /* Предпочтение сниженной анимации */
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .btn{transition:none}
+    }
+      /* Галерея фото */
+    .gallery{display:grid; grid-template-columns: repeat(12, 1fr); gap:12px; margin-top:10px}
+    .shot{grid-column: span 4; border-radius: var(--radius-md); overflow:hidden; border:1px solid var(--border); background:#0e1830}
+    .shot img{width:100%; height:100%; object-fit:cover; aspect-ratio: 4 / 3; display:block; filter:saturate(1.05)}
+
+    /* Видео */
+    .videos{display:grid; grid-template-columns: repeat(12, 1fr); gap:16px}
+    .video{grid-column: span 6; background:var(--panel); border:1px solid var(--border); border-radius: var(--radius-lg); overflow:hidden; box-shadow: var(--shadow)}
+    .video .frame{position:relative; width:100%; padding-top:56.25%}
+    .video iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0}
+    .video .meta{padding:12px 14px}
+
+    @media (max-width: 960px){
+      .video{grid-column: span 12}
+      .shot{grid-column: span 6}
+    }
+    @media (max-width: 640px){
+      .shot{grid-column: span 12}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand" aria-label="Бренд">
+        <div class="brand-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.9L18.18 22 12 18.77 5.82 22 7 14.17l-5-4.9 6.91-1.01L12 2z"/></svg>
+        </div>
+        <span>Имя Фамилия</span>
+      </div>
+      <div class="nav-links" role="navigation" aria-label="Быстрые ссылки">
+        <a href="#about">Кто я и как работаю</a>
+        <a href="#skills">Инструменты и подходы</a>
+        <a href="#projects">Результаты и кейсы</a>
+        <a href="#contact">Свяжемся</a>
+      <a href="#video">Видеоархив</a>
+        </div>
+    </div>
+  </nav>
+
+  <header>
+    <div class="container hero">
+      <div class="hero-card">
+        <h1>Привет! Я — Имя Фамилия</h1>
+        <p class="subtitle">Фронтенд‑разработчик, который создаёт быстрые, доступные и эстетичные интерфейсы. Люблю строгую типизацию, чистую архитектуру и небольшие анимации, которые делают продукт живым.</p>
+        <div class="actions">
+          <a class="btn primary" href="#projects"><span class="dot"></span>Смотреть проекты</a>
+          <a class="btn" href="#contact">Связаться</a>
+        </div>
+      </div>
+      <aside class="hero-aside" aria-label="Краткие факты">
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            <div>
+              <strong>Опыт:</strong> 5+ лет коммерческой разработки
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.5a8.5 8.5 0 11-17 0 8.5 8.5 0 0117 0zM11 7h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg>
+            <div>
+              <strong>Ищу:</strong> продуктовую команду с фокусом на UX
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zm0 7L2 4v11l10 5 10-5V4l-10 5z"/></svg>
+            <div>
+              <strong>Стек:</strong> TypeScript, React, Node.js
+            </div>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about" aria-labelledby="about-title">
+      <h2 class="section-title" id="about-title">Кто я и как работаю</h2>
+      <div class="about">
+        <div class="about-card">
+          <p>Я специализируюсь на создании интерфейсов, которые быстро загружаются, устойчивы к ошибкам и удобны для всех пользователей. Забочусь о доступности (WAI‑ARIA), показателях Web Vitals и читаемом коде.</p>
+          <p>В проектах люблю продуманную дизайн‑систему, атомарные стили и CI/CD. Регулярно провожу ревью кода и менторю новичков.</p>
+        </div>
+        <div class="about-card">
+          <p><strong>Достижения:</strong></p>
+          <ul>
+            <li>Снизил LCP на главной странице с 3.2s до 1.6s за счёт оптимизации критичного пути рендера.</li>
+            <li>Внедрил SSR и кодсплиттинг, уменьшив бандл на 38%.</li>
+            <li>Запустил библиотеку UI‑компонентов с документацией и Storybook.</li>
+          </ul>
+        </div>
+      </div>
+    <div class="gallery" aria-label="Фото для атмосферы">
+        <figure class="shot"><img src="images/shot-1.jpg" alt="Рабочее место и ноутбук"></figure>
+        <figure class="shot"><img src="images/shot-2.jpg" alt="Фрагмент интерфейса проекта"></figure>
+        <figure class="shot"><img src="images/shot-3.jpg" alt="Сцена из презентации или выступления"></figure>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 class="section-title" id="skills-title">Инструменты и подходы</h2>
+      <div class="skills">
+        <div class="skill">
+          <h4>Frontend</h4>
+          <div class="tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Next.js</span>
+          </div>
+        </div>
+        <div class="skill">
+          <h4>UI/UX</h4>
+          <div class="tags">
+            <span class="tag">Дизайн‑системы</span>
+            <span class="tag">Анимации</span>
+            <span class="tag">Доступность</span>
+            <span class="tag">Figma</span>
+          </div>
+        </div>
+        <div class="skill">
+          <h4>Backend</h4>
+          <div class="tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">Express</span>
+            <span class="tag">REST</span>
+            <span class="tag">PostgreSQL</span>
+          </div>
+        </div>
+        <div class="skill">
+          <h4>Инфраструктура</h4>
+          <div class="tags">
+            <span class="tag">Git</span>
+            <span class="tag">Docker</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">Vercel</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 class="section-title" id="projects-title">Результаты и кейсы</h2>
+      <div class="projects">
+        <article class="card">
+          <div class="thumb" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Дизайн‑система UI</h3>
+            <p class="muted">Библиотека компонентов с темизацией, токенами и документацией.</p>
+            <div class="meta"><span>React</span><span>Storybook</span><span>CSS‑vars</span></div>
+            <a class="btn" href="#" aria-label="Открыть репозиторий Дизайн‑система UI">Репозиторий</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="thumb" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v10H4z" stroke="currentColor" stroke-width="2"/><path d="M2 18h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Аналитическая панель</h3>
+            <p class="muted">SSR‑приложение с графиками и фильтрами, время LCP &lt; 2s.</p>
+            <div class="meta"><span>Next.js</span><span>Charts</span><span>SSR</span></div>
+            <a class="btn" href="#">Демо</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="thumb" aria-hidden="true">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 7-7 7-7-7 7-7z" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <div class="card-body">
+            <h3>Оптимизация производительности</h3>
+            <p class="muted">Набор скриптов и гайдов для улучшения Web Vitals.</p>
+            <div class="meta"><span>Core Web Vitals</span><span>Lighthouse</span></div>
+            <a class="btn" href="#">Статья</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="video" aria-labelledby="video-title">
+      <h2 class="section-title" id="video-title">Видеоархив: подкасты и интервью</h2>
+      <div class="videos">
+        <article class="video">
+          <div class="frame">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Подкаст: стратегия роста" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="meta">
+            <strong>Стратегия роста продукта</strong>
+            <div class="muted">Беседа о метриках, A/B‑тестах и скорости доставки</div>
+          </div>
+        </article>
+        <article class="video">
+          <div class="frame">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" title="Интервью: дизайн‑системы" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="meta">
+            <strong>Дизайн‑системы без боли</strong>
+            <div class="muted">Как масштабировать UI и не утонуть в регрессе</div>
+          </div>
+        </article>
+        <article class="video">
+          <div class="frame">
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID_3" title="Интервью: руководство продуктом" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="meta">
+            <strong>Руководство и культура</strong>
+            <div class="muted">Интервью о процессах, командной динамике и практиках</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 class="section-title" id="contact-title">Свяжемся и обсудим</h2>
+      <div class="contact">
+        <div class="panel contact-form">
+          <form action="mailto:you@example.com" method="post" enctype="text/plain">
+            <label for="name">Имя</label>
+            <input id="name" name="name" type="text" placeholder="Как к вам обращаться" required />
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+            <label for="message">Сообщение</label>
+            <textarea id="message" name="message" placeholder="Расскажите коротко о задаче"></textarea>
+
+            <button class="btn primary" type="submit"><span class="dot"></span>Отправить</button>
+          </form>
+          <p class="muted" style="margin-top:10px">Либо пишите на <a href="mailto:you@example.com">you@example.com</a></p>
+        </div>
+        <div class="panel">
+          <p><strong>Соцсети:</strong></p>
+          <ul>
+            <li><a href="#" aria-label="GitHub">GitHub</a></li>
+            <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+            <li><a href="#" aria-label="Telegram">Telegram</a></li>
+          </ul>
+          <p class="muted">Амстердам · Открыт к удалёнке и гибриду</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="y"></span> Имя Фамилия — Портфолио
+    </div>
+  </footer>
+
+  <script>
+    // Текущий год в футере
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
